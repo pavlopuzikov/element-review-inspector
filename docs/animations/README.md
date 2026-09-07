@@ -30,6 +30,21 @@ renders at 1920x1080 rather than 1280x720. It reuses the same `MockPage`,
 `IC_SCALE` sets the render size; `PXU` is pinned to the design size, so a draft
 at 0.5 puts everything in exactly the same place, only smaller.
 
+It ships as `../media/linkedin.mp4`: 1920x1080, h264 yuv420p, 30fps, no audio
+track, 56.8 seconds over six beats.
+
+| Beat | In | Runs |
+| --- | --- | --- |
+| 1. What it is | 0:00 | 5.4s |
+| 2. The note that fails | 0:05 | 9.0s |
+| 3. The loop | 0:14 | 18.2s |
+| 4. What comes out | 0:32 | 8.9s |
+| 5. The handoff | 0:41 | 9.8s |
+| 6. Where to get it | 0:51 | 5.6s |
+
+There is no audio, so every beat has to read on mute. If you change a beat's
+length, change the table.
+
 ## Five things that will bite
 
 Every one of these fails silently. None of them raises, and none of them looks
@@ -79,7 +94,7 @@ call `Text` directly here; go through `t()` or `tracked()`.
 mid-write, which is easy when a scene takes minutes, and the truncated file is
 cached forever. Every later render of that one string then dies on
 
-```
+```text
 ParseError: no element found: line 1, column 0
 ```
 

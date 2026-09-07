@@ -6,7 +6,7 @@ You mark up the page in the browser as usual. When you press **Copy all**, the
 review also goes to a loopback port on your machine. Claude Code, Cursor or
 anything else that speaks MCP then reads it with a tool call.
 
-```
+```text
 browser  ──POST http://127.0.0.1:7391/review──▶  server.mjs  ──stdio JSON-RPC──▶  your agent
 ```
 
@@ -71,7 +71,7 @@ rest of the session does not.
 
 The server writes each image to disk and puts the path in the note:
 
-```
+```text
 - Screenshot: /tmp/inspect-comment-mcp/shots/review-3-note-1.png (412x88 png)
 ```
 
