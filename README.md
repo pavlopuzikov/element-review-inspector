@@ -1,6 +1,6 @@
-# inspect-comment
+# element-review-inspector
 
-[![CI](https://github.com/pavlopuzikov/inspect-comment/actions/workflows/ci.yml/badge.svg)](https://github.com/pavlopuzikov/inspect-comment/actions/workflows/ci.yml)
+[![CI](https://github.com/pavlopuzikov/element-review-inspector/actions/workflows/ci.yml/badge.svg)](https://github.com/pavlopuzikov/element-review-inspector/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![no dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](package.json)
 
@@ -10,7 +10,7 @@ or a coding agent to act on without guessing.
 
 One dependency-free file. No account, no backend, no build step.
 
-![Hover an element, click it, comment, queue it, copy the review](https://raw.githubusercontent.com/pavlopuzikov/inspect-comment/main/docs/media/the-loop.gif)
+![Hover an element, click it, comment, queue it, copy the review](https://raw.githubusercontent.com/pavlopuzikov/element-review-inspector/main/docs/media/the-loop.gif)
 
 ```markdown
 # Review: /chapters/golden-era
@@ -45,7 +45,7 @@ Viewport 1440x900 @2x · 1 item
 
 ## Install
 
-**React / Next.js.** Copy `src/inspect-comment.js`, `src/inspect-comment.d.ts` and
+**React / Next.js.** Copy `src/element-review-inspector.js`, `src/element-review-inspector.d.ts` and
 `src/DevInspector.tsx` into your project, keeping them together, then gate the
 **import**, not the render:
 
@@ -67,7 +67,7 @@ by every prerendered page. Measured on Next 16 with Turbopack: 22 kB of dev
 tooling shipped to production. The dynamic import above sits in a branch that
 constant-folds away and leaves nothing behind.
 
-To check: `npm run build && grep -rl "data-inspect-comment" .next/static` should
+To check: `npm run build && grep -rl "data-element-review-inspector" .next/static` should
 print nothing.
 
 Omit `{ ssr: false }`. It is not allowed from a Server Component and the build
@@ -78,7 +78,7 @@ will fail, and it is unnecessary here anyway.
 `<head>` without `defer`.
 
 **Any site you do not control.** A [bookmarklet](docs/bookmarklet.md): one drag,
-then one click. Where a strict CSP blocks it, paste `dist/inspect-comment.js`
+then one click. Where a strict CSP blocks it, paste `dist/element-review-inspector.js`
 into the console instead; no CSP can stop that, because it is not a page resource.
 
 ## Keyboard
@@ -125,20 +125,20 @@ a review then also delivers it, and `await_review` blocks while you mark the pag
 up. Setup and troubleshooting: [mcp/README.md](mcp/README.md).
 
 ```bash
-claude mcp add inspect-comment -- npx -y inspect-comment-mcp
+claude mcp add element-review-inspector -- npx -y github:pavlopuzikov/element-review-inspector
 ```
 
 If it does have one (Playwright, chrome-devtools-mcp), read the queue out of the
 page, with no server at all:
 
 ```js
-JSON.parse(document.getElementById('inspect-comment-queue').textContent)
+JSON.parse(document.getElementById('element-review-inspector-queue').textContent)
 ```
 
 ## API
 
 ```js
-import { mount } from './inspect-comment.js';
+import { mount } from './element-review-inspector.js';
 
 const api = mount({
   accent: '#3a4a5c',                // hover outline
@@ -159,7 +159,7 @@ api.destroy()      // full teardown: UI, listeners, console/fetch, edits, JSON t
 // also: api.queue, api.logs, api.bridge, api.config({ accent: '#0a7' })
 ```
 
-`mount()` is idempotent and exposes the instance as `window.InspectComment`.
+`mount()` is idempotent and exposes the instance as `window.ElementReviewInspector`.
 `describe(el)` and `toMarkdown(entries)` are exported separately, so the capture
 logic works with no UI.
 

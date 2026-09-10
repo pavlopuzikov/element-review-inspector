@@ -32,7 +32,7 @@ GIF_FPS=12
 # own config AFTER importing the scene module, so anything the module sets for
 # media_dir is overwritten before a frame is written. The scratch dir is passed
 # here so the mp4s land where this script goes looking for them.
-SCRATCH="${IC_MEDIA_DIR:-${TMPDIR:-/tmp}/inspect-comment-anim}"
+SCRATCH="${IC_MEDIA_DIR:-${TMPDIR:-/tmp}/element-review-inspector-anim}"
 
 mkdir -p "$OUT" "$SCRATCH"
 

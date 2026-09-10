@@ -7,7 +7,7 @@
 //
 //   1. dist/ is regenerated from src/ and committed. It is the console-paste
 //      path, so a stale artifact means the headline feature ships broken.
-//   2. Every symbol src/inspect-comment.d.ts promises is really exported.
+//   2. Every symbol src/element-review-inspector.d.ts promises is really exported.
 //      The types are hand-written, so nothing else keeps them honest.
 //   3. The source stays dependency-free and side-effect-free on import.
 //   4. The bookmarklet in docs/ still points at the version being shipped.
@@ -28,8 +28,8 @@ const failures = [];
 const fail = (msg) => failures.push(msg);
 const ok = (msg) => console.log(`  ok   ${msg}`);
 
-const src = await read("src", "inspect-comment.js");
-const dts = await read("src", "inspect-comment.d.ts");
+const src = await read("src", "element-review-inspector.js");
+const dts = await read("src", "element-review-inspector.d.ts");
 const mcp = await read("mcp", "server.mjs");
 const readme = await read("README.md");
 const pkg = JSON.parse(await read("package.json"));
@@ -38,14 +38,14 @@ const pkg = JSON.parse(await read("package.json"));
 
 const { buildBundle } = await import("./build.mjs");
 const fresh = buildBundle(src);
-const committed = await read("dist", "inspect-comment.js").catch(() => null);
+const committed = await read("dist", "element-review-inspector.js").catch(() => null);
 
 if (committed === null) {
-  fail("dist/inspect-comment.js is missing. Run `npm run build`.");
+  fail("dist/element-review-inspector.js is missing. Run `npm run build`.");
 } else if (committed !== fresh) {
-  fail("dist/inspect-comment.js is stale. Run `npm run build` and commit the result.");
+  fail("dist/element-review-inspector.js is stale. Run `npm run build` and commit the result.");
 } else {
-  ok("dist/inspect-comment.js matches src/");
+  ok("dist/element-review-inspector.js matches src/");
 }
 
 /* 2. the hand-written types match the real exports ------------------------ */
@@ -71,7 +71,7 @@ if (pkg.dependencies && Object.keys(pkg.dependencies).length) {
 }
 
 if (/^\s*import\s/m.test(src) || /\bimport\s*\(/.test(src)) {
-  fail("src/inspect-comment.js gained an import; the bundler in scripts/build.mjs cannot inline it.");
+  fail("src/element-review-inspector.js gained an import; the bundler in scripts/build.mjs cannot inline it.");
 } else {
   ok("core has no imports");
 }
@@ -79,7 +79,7 @@ if (/^\s*import\s/m.test(src) || /\bimport\s*\(/.test(src)) {
 // mount() is called explicitly by every entry point. If the module ever mounts
 // at import time it breaks SSR and the React wrapper's cleanup.
 if (/^\s*mount\(\s*\)/m.test(src)) {
-  fail("src/inspect-comment.js calls mount() at module scope; importing it must have no side effects.");
+  fail("src/element-review-inspector.js calls mount() at module scope; importing it must have no side effects.");
 } else {
   ok("importing the core has no side effects");
 }
@@ -122,7 +122,7 @@ if (bareImports.length) {
 }
 
 if (!pkg.files.includes("mcp/")) {
-  fail("package.json `files` omits mcp/, so `npx inspect-comment-mcp` would resolve to nothing.");
+  fail("package.json `files` omits mcp/, so `npx -y github:pavlopuzikov/element-review-inspector` would resolve to nothing.");
 } else {
   ok("mcp/ is published");
 }

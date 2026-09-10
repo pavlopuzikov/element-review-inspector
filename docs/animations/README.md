@@ -81,7 +81,7 @@ a Pango page of a fixed size, and a string whose advance runs past that page
 wraps rather than overflowing. Nothing raises and nothing warns; the mobject is
 simply two lines tall, and it lands as a layout bug somewhere else entirely. The
 threshold is a property of the page and not of the render, so it does not move
-with resolution: `inspect-comment` survives `font_size` 264 and wraps at 336 at
+with resolution: the old 15-character name `inspect-comment` survives `font_size` 264 and wraps at 336 at
 768, 1280 and 1920 pixels wide alike. Which means `OVERSAMPLE` is the thing that
 trips it. 8x is safe for body copy and not safe for a headline, and `tracked()`
 is worse off than `t()`, because letter-spacing widens a string without making
@@ -105,7 +105,7 @@ hit it anyway, delete the whole `media_dir`.
 ## Fonts
 
 The palette is the tool's own: `ACCENT` and `SELECT` in `theme.py` are the
-defaults from `src/inspect-comment.js`, so an animation of the tool is drawn in
+defaults from `src/element-review-inspector.js`, so an animation of the tool is drawn in
 the colours the tool actually paints.
 
 `BRAND` is the exception and is the mock page's colour, not the tool's. It is

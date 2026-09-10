@@ -51,7 +51,7 @@ OVERSAMPLE = 8
 # advance runs past that page WRAPS. Nothing raises and nothing warns: the
 # mobject is silently two lines tall, which lands as a layout bug somewhere else
 # entirely. The threshold is a property of the page, not of the render, so it
-# does not move with resolution: "inspect-comment" survives font_size 264 and
+# does not move with resolution: the old 15-character name "inspect-comment" survives font_size 264 and
 # wraps at 336 at 768, 1280 and 1920 pixels wide alike.
 #
 # 8x is therefore safe for body copy and not safe for a headline. Rather than
@@ -348,7 +348,7 @@ def shadow(shape, spread=6, offset=6, opacity=0.25, steps=5):
     return g
 
 
-# The real chrome, from the CSS in src/inspect-comment.js:
+# The real chrome, from the CSS in src/element-review-inspector.js:
 #   button { font: 11px/1 inherit; letter-spacing: 0.08em; text-transform:
 #            uppercase; border-radius: 999px; padding: 9px 12px;
 #            background: #161512; box-shadow: 0 6px 20px rgba(0,0,0,0.25) }
@@ -372,13 +372,17 @@ def pill(label, fill, pad_x):
 
 
 def dock(active=False, count=None):
-    """The toggle pill, and the queue-count chip once anything is queued."""
+    """
+    The toggle pill, the Tab chip (the focus-order overlay, .focus-btn in the
+    CSS: #24221f, padding 9px 10px), and the queue-count chip once anything is
+    queued. Three pills, in the order the tool appends them.
+    """
     # The product uses a middot, not a slash.
     label = "CLICK AN ELEMENT · ESC" if active else "INSPECT + COMMENT"
-    parts = VGroup(pill(label, ACCENT if active else PANEL, 12))
+    parts = VGroup(pill(label, ACCENT if active else PANEL, 12), pill("TAB", "#24221f", 10))
     if count:
         parts.add(pill(str(count), SELECT, 10))
-        parts.arrange(RIGHT, buff=px(6))
+    parts.arrange(RIGHT, buff=px(6))
 
     parts.move_to(P(1280 - 16, 720 - 16) + LEFT * parts.width / 2 + UP * parts.height / 2)
     return parts
@@ -396,18 +400,55 @@ def cursor():
     return c
 
 
-def panel(lines, comment=None, changes=None, width=340):
+# The panel's own buttons, from .row in the CSS: 11px uppercase tracked 0.08em,
+# radius 8. The primary is ACCENT; the rest are ghosts, a PANEL_LINE hairline
+# on the panel's own fill.
+ROW_H = 29
+
+
+def row_button(label, primary=False, min_w=None):
+    lt = tracked(label, 11, "#f6f5f1" if primary else PANEL_DIM)
+    w = max(lt.width + px(20), min_w or 0)
+    bg = RoundedRectangle(
+        width=w, height=px(ROW_H), corner_radius=px(8),
+        fill_color=ACCENT if primary else PANEL, fill_opacity=1,
+        stroke_color=PANEL_LINE, stroke_width=0 if primary else HAIR,
+    )
+    lt.move_to(bg.get_center())
+    return VGroup(bg, lt)
+
+
+def crumb(label, current=False):
+    """One breadcrumb chip: .crumb in the CSS, 10px, padding 4px 6px, radius 5."""
+    lt = t(label, 10, "#f6f5f1" if current else "#b4ada0")
+    bg = RoundedRectangle(
+        width=lt.width + px(12), height=px(18), corner_radius=px(5),
+        fill_color=SELECT if current else "#24221f", fill_opacity=1, stroke_width=0,
+    )
+    lt.move_to(bg.get_center())
+    return VGroup(bg, lt)
+
+
+def panel(lines, comment=None, changes=None, width=340, crumbs=None):
     """
-    The tool's comment panel: descriptor above, comment box below.
+    The tool's comment panel, in the order it builds it: eyebrow, breadcrumb
+    chips, descriptor rows, comment box, button row, hint.
 
     `lines` are (label, value, colour) triples. The colour carries the one piece
     of judgement in the whole capture, which is whether contrast passes.
+    `crumbs` are the ancestor labels, outermost first; the last one is current.
     """
     pad = 14
     body = VGroup()
 
     eyebrow = tracked("SELECTED ELEMENT", 10, PANEL_DIM, em=0.14)
     body.add(eyebrow)
+
+    if crumbs:
+        chips = VGroup(*[
+            crumb(c, current=(i == len(crumbs) - 1)) for i, c in enumerate(crumbs)
+        ]).arrange(RIGHT, buff=px(4))
+        body.add(chips)
 
     desc = VGroup()
     for label, value, col in lines:
@@ -440,7 +481,32 @@ def panel(lines, comment=None, changes=None, width=340):
         )
         body.add(field)
 
+        # Add / CSS / Shot / Copy / Esc. The ghosts take what they need and the
+        # primary takes the rest, which is what flex: 1 does in the tool.
+        ghosts = [row_button(s) for s in ("CSS", "SHOT", "COPY", "ESC")]
+        used = sum(g.width for g in ghosts) + px(8) * len(ghosts)
+        primary = row_button("ADD", primary=True,
+                             min_w=px(width - pad * 2) - used)
+        buttons = VGroup(primary, *ghosts).arrange(RIGHT, buff=px(8))
+        body.add(buttons)
+
+        # The browser wraps this at 340px; manim does not wrap, so it is split
+        # where the browser splits it. One line ran 30px past the panel and
+        # pushed the whole thing off the right of the frame.
+        hint = VGroup(
+            t("Ctrl+⏎ add · Alt+↑↓←→ walk · Tab focus order", 9, "#6f6a61"),
+            t("Alt+F overlay · Alt+C toggle", 9, "#6f6a61"),
+        ).arrange(DOWN, buff=px(3), aligned_edge=LEFT)
+        body.add(hint)
+
     body.arrange(DOWN, buff=px(10), aligned_edge=LEFT)
+
+    # Nothing here wraps or clips, so anything wider than the padding box
+    # silently spills out of the panel. Fail loudly instead.
+    inner = px(width - pad * 2)
+    assert body.width <= inner + 1e-6, (
+        f"panel content is {body.width * PXU:.0f}px wide in a {width - pad * 2}px box"
+    )
 
     bg = RoundedRectangle(
         width=px(width), height=body.height + px(pad * 2), corner_radius=px(12),
@@ -456,6 +522,21 @@ def panel(lines, comment=None, changes=None, width=340):
     if comment:
         g.add(comment_text(g, comment))
     return g
+
+
+def place_panel(p, x, y):
+    """
+    place() for a panel: the left edge is the panel's own box, not its shadow.
+
+    place() positions by bounding box, and the shadow spreads 14px past the box
+    on every side, so every panel landed 14px right of where the tool puts it
+    and flush against the frame edge. The vertical stays as place() has it:
+    that puts the shadow's bottom, not the box's, 10px above the dock, which is
+    the clearance the frame wants.
+    """
+    place(p, x, y)
+    p.shift(RIGHT * (P(x, 0)[0] - p.bg.get_left()[0]))
+    return p
 
 
 def comment_text(p, s, size=11):

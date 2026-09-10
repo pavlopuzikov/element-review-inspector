@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * inspect-comment MCP server.
+ * element-review-inspector MCP server.
  *
  * Two halves that meet in the middle:
  *
@@ -25,12 +25,16 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
+// The version the handshake reports. A literal here drifted from package.json
+// within one release (it said 2.0.0 while the package was 2.1.0), so read it.
+const PKG = JSON.parse(fs.readFileSync(new URL("../package.json", import.meta.url), "utf8"));
+
 const PORT = Number(process.env.IC_MCP_PORT || 7391);
 const HOST = "127.0.0.1";
 const PROTOCOL_VERSIONS = ["2025-06-18", "2025-03-26", "2024-11-05"];
 // IC_MCP_DIR exists so the test suite does not write into, or clear, the
 // store a developer has a real review sitting in.
-const DIR = process.env.IC_MCP_DIR || path.join(os.tmpdir(), "inspect-comment-mcp");
+const DIR = process.env.IC_MCP_DIR || path.join(os.tmpdir(), "element-review-inspector-mcp");
 const STORE = path.join(DIR, "reviews.json");
 const SHOTS = path.join(DIR, "shots");
 const MAX_STORED = 20;
@@ -38,7 +42,7 @@ const MAX_BODY = 4 * 1024 * 1024;
 
 // stdout is the JSON-RPC channel. Anything else written there corrupts the
 // stream and the client disconnects with a parse error that names nothing.
-const log = (...a) => process.stderr.write("[inspect-comment] " + a.join(" ") + "\n");
+const log = (...a) => process.stderr.write("[element-review-inspector] " + a.join(" ") + "\n");
 
 /* ------------------------------------------------------------------ *
  * Review store
@@ -206,7 +210,7 @@ const server = http.createServer((req, res) => {
   // The inspector probes this before offering to send, so that a failed post
   // never shows up in the reviewer's own captured network log.
   if (req.method === "GET" && url.pathname === "/health") {
-    json(res, 200, { ok: true, name: "inspect-comment-mcp", reviews: reviews.length });
+    json(res, 200, { ok: true, name: "element-review-inspector-mcp", reviews: reviews.length });
     return;
   }
 
@@ -266,7 +270,7 @@ const TOOLS = [
   {
     name: "get_review",
     description:
-      "Get the most recent design review captured with inspect-comment in the browser. " +
+      "Get the most recent design review captured with element-review-inspector in the browser. " +
       "Each note names a specific element (component path, source file and line, CSS " +
       "selector, computed box, WCAG contrast, position in the page's focus order) plus " +
       "the reviewer's comment and any exact CSS values they dialled in. A note may cite " +
@@ -322,7 +326,7 @@ async function callTool(name, args = {}) {
     if (!reviews.length) {
       return fail(
         "No review has been received yet.\n\n" +
-          "The user captures one in the browser with inspect-comment, then presses " +
+          "The user captures one in the browser with element-review-inspector, then presses " +
           '"Copy all" in the queue panel, which also sends it here. If they have not done ' +
           "that yet, call await_review to wait for it."
       );
@@ -402,9 +406,9 @@ async function handle(msg) {
       reply(id, {
         protocolVersion: version,
         capabilities: { tools: { listChanged: false } },
-        serverInfo: { name: "inspect-comment", version: "2.0.0" },
+        serverInfo: { name: "element-review-inspector", version: PKG.version },
         instructions:
-          "Design review notes captured from a live page with inspect-comment. get_review " +
+          "Design review notes captured from a live page with element-review-inspector. get_review " +
           "returns the latest; await_review blocks until the user sends one from the " +
           "browser. Notes cite screenshots by absolute path: read those files directly.",
       });

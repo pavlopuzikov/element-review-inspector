@@ -2,7 +2,7 @@
 // consumer resolves this file and the bundler resolves the sibling .js, so the
 // core stays a plain buildless script that also runs from a <script> tag.
 
-export interface InspectCommentOptions {
+export interface ElementReviewInspectorOptions {
   /** Hover outline colour. Default "#3a4a5c". */
   accent?: string;
   /** Selected outline colour. Default "#c23a12". */
@@ -18,7 +18,7 @@ export interface InspectCommentOptions {
    */
   capture?: boolean;
   /**
-   * Mirror the queue into `<script type="application/json" id="inspect-comment-queue">`
+   * Mirror the queue into `<script type="application/json" id="element-review-inspector-queue">`
    * so an agent driving the browser can read it without a copy-paste. Default true.
    */
   expose?: boolean;
@@ -116,9 +116,9 @@ export interface QueueEntry {
   changes: CssChange[];
 }
 
-export interface InspectCommentApi {
+export interface ElementReviewInspectorApi {
   /** Merge new options. Colours apply immediately. */
-  config(next: InspectCommentOptions): void;
+  config(next: ElementReviewInspectorOptions): void;
   /** Snapshot of the queued comments. */
   readonly queue: QueueEntry[];
   /** Captured console errors, warnings and failed requests. */
@@ -138,10 +138,10 @@ export interface InspectCommentApi {
 }
 
 /** Create an instance. Prefer `mount` unless you need more than one. */
-export function createInspector(options?: InspectCommentOptions): InspectCommentApi;
+export function createInspector(options?: ElementReviewInspectorOptions): ElementReviewInspectorApi;
 
 /** Mount once. Repeat calls return the existing instance. Null during SSR. */
-export function mount(options?: InspectCommentOptions): InspectCommentApi | null;
+export function mount(options?: ElementReviewInspectorOptions): ElementReviewInspectorApi | null;
 
 /** Destroy the mounted instance, if any. */
 export function unmount(): void;
@@ -176,7 +176,7 @@ export function wcagRequirement(sizePx: number, weight: string | number): number
 
 declare global {
   interface Window {
-    __inspectComment?: InspectCommentApi;
-    InspectComment?: InspectCommentApi;
+    __elementReviewInspector?: ElementReviewInspectorApi;
+    ElementReviewInspector?: ElementReviewInspectorApi;
   }
 }

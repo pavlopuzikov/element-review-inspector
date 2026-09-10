@@ -19,10 +19,10 @@ import theme
 from theme import (
     P, px, PXU, MONO, BODY, DISPLAY,
     CANVAS, INK, INK_DIM, INK_MUTE, LINE, PANEL, PANEL_TEXT, PANEL_DIM,
-    SCRIM_TEXT, ACCENT, SELECT, WARN, GOOD, HAIR, OUTLINE,
+    SCRIM_TEXT, ACCENT, SELECT, WARN, GOOD, BRAND, HAIR, OUTLINE,
 )
 from parts import (
-    MockPage, outline, section_outline, badge, dock, cursor, panel, place, t, box,
+    MockPage, outline, section_outline, badge, dock, cursor, panel, place, place_panel, t, box,
     comment_text, scrim, tag, shadow,
 )
 
@@ -126,8 +126,8 @@ class TheLoop(Scene):
             ("Selector", "#golden-era > a", None),
             ("Box", "196x44 pad 16 24", None),
             ("A11y", "3.1:1 FAILS AA", WARN),
-        ], comment="")
-        place(p1, 1280 - 16 - 340, 720 - 16 - 34 - 10 - p1.height * PXU)
+        ], comment="", crumbs=["<main>", "<section>#golden-era", "<a>.cta"])
+        place_panel(p1, 1280 - 16 - 340, 720 - 16 - 34 - 10 - p1.height * PXU)
         self.play(FadeIn(p1, shift=UP * px(12)), run_time=0.5)
         self.wait(0.7)
 
@@ -165,8 +165,8 @@ class TheLoop(Scene):
             ("Component", "ChaptersIndex > TeaserCard", None),
             ("Selector", "div:nth-of-type(2)", None),
             ("Box", "340x150 pad 20 24", None),
-        ], comment="")
-        place(p2, 1280 - 16 - 340, 720 - 16 - 34 - 10 - p2.height * PXU)
+        ], comment="", crumbs=["<main>", "<div>.cards", "<div>.card"])
+        place_panel(p2, 1280 - 16 - 340, 720 - 16 - 34 - 10 - p2.height * PXU)
         self.play(FadeIn(p2, shift=UP * px(12)), run_time=0.4)
 
         note2 = comment_text(p2, "cards need more air between them")
@@ -283,7 +283,8 @@ class OneClick(Scene):
         ROW_Y, ROW_STEP = 178, 96
         rows_mid = ROW_Y + ROW_STEP * 2
 
-        el_bg = box(240, 56, fill=SELECT, r=28)
+        # BRAND, not SELECT: the page's colour, not the tool's. See theme.BRAND.
+        el_bg = box(240, 56, fill=BRAND, r=28)
         el_t = t("READ THE CHAPTER", 12, "#f6f5f1")
         el = VGroup(el_bg, el_t)
         el_t.move_to(el_bg.get_center())

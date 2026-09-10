@@ -5,15 +5,15 @@
 // Mount it outside production only:
 //   {process.env.NODE_ENV !== "production" && <DevInspector />}
 //
-// Everything lives in ./inspect-comment.js. This file is deliberately a thin
+// Everything lives in ./element-review-inspector.js. This file is deliberately a thin
 // wrapper: the previous version was a second full implementation that had
 // already drifted from the vanilla one (different DOM traversal depth, missing
 // clipboard fallback) after a single commit.
 
 import { useEffect } from "react";
-import { mount, type InspectCommentOptions } from "./inspect-comment.js";
+import { mount, type ElementReviewInspectorOptions } from "./element-review-inspector.js";
 
-export type DevInspectorProps = InspectCommentOptions;
+export type DevInspectorProps = ElementReviewInspectorOptions;
 
 export function DevInspector({ accent, select, hotkey, storage }: DevInspectorProps = {}) {
   useEffect(() => {

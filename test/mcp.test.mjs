@@ -225,7 +225,7 @@ test("wire: initialize answers with a protocol version and a server name", async
     clientInfo: { name: "test", version: "0" },
   });
   assert.equal(result.protocolVersion, "2025-06-18", "should echo a version it supports");
-  assert.equal(result.serverInfo.name, "inspect-comment");
+  assert.equal(result.serverInfo.name, "element-review-inspector");
   assert.ok(result.capabilities.tools, "must declare the tools capability or nothing is listed");
 });
 
@@ -266,7 +266,7 @@ test("wire: a malformed line does not take the server down", async () => {
 
 test("wire: the browser posts a review and the agent reads it back", async () => {
   const health = await fetch(`http://127.0.0.1:${port}/health`).then((r) => r.json());
-  assert.equal(health.name, "inspect-comment-mcp", "the browser probes for exactly this");
+  assert.equal(health.name, "element-review-inspector-mcp", "the browser probes for exactly this");
 
   const posted = await fetch(`http://127.0.0.1:${port}/review`, {
     method: "POST",

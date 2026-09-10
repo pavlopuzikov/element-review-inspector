@@ -1,5 +1,42 @@
 # Changelog
 
+## 3.0.0
+
+Renamed from `inspect-comment` to `element-review-inspector`, so the name says
+what it is. GitHub redirects the old repository URL. Everything that carried the
+old name changed with it, which is the breaking part:
+
+- `src/inspect-comment.js` is `src/element-review-inspector.js`; same for the
+  `.d.ts` and the IIFE in `dist/`.
+- The queue is exposed as `#element-review-inspector-queue`, the shadow host
+  carries `data-element-review-inspector`, and the instance is
+  `window.ElementReviewInspector`. Anything reading the old ids finds nothing.
+- The bookmarklet points at the new path and is pinned to v3.0.0.
+- The MCP server is `element-review-inspector-mcp` and names itself so in the
+  handshake.
+
+### Fixed
+
+- **The documented install did not exist.** `npx -y inspect-comment-mcp` was in
+  the README, the MCP README, the changelog and the LinkedIn cut, and nothing
+  had ever been published to npm under that name or any other. Every path now
+  reads `npx -y github:pavlopuzikov/element-review-inspector`, which resolves
+  the repository directly and runs its one binary; verified against a clean
+  `npx` cache.
+- The MCP handshake reported version `2.0.0` from a literal, one release after
+  the package moved to 2.1.0. It now reads `package.json`.
+- **The panel's button row did not fit the panel.** Five buttons came to 322px
+  in a 312px box on Windows: `Add Ctrl+⏎` folded onto two lines and `Esc` was
+  clipped at the right edge. The button now reads `Add`, the shortcut leads
+  the hint line under it, and no button is allowed to wrap. Measured at the
+  panel's 340px with 50px to spare.
+- `one-click.gif` painted the mock page's button in the tool's own selection
+  red, the colour that commit a2a1c09 had replaced in the other two animations
+  because it measured 4.93:1 while the panel said 3.1:1. Re-rendered.
+- The animations now draw the panel the tool actually has: the breadcrumb
+  chips, the Add / CSS / Shot / Copy / Esc row, and the Tab chip in the dock.
+  They were still showing the 2.0 panel, which had none of them.
+
 ## 2.1.0
 
 ### Added

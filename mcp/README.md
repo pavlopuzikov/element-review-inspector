@@ -16,12 +16,13 @@ port only ever binds to `127.0.0.1`.
 ## Install
 
 Nothing to install. It is one file with no dependencies, run by the Node you
-already have.
+already have. The package is not on npm; `npx` fetches it from GitHub, which
+needs `git` on your PATH, and runs its one binary.
 
 **Claude Code**
 
 ```bash
-claude mcp add inspect-comment -- npx -y inspect-comment-mcp
+claude mcp add element-review-inspector -- npx -y github:pavlopuzikov/element-review-inspector
 ```
 
 **Cursor**, or anything else reading `mcp.json`:
@@ -29,9 +30,9 @@ claude mcp add inspect-comment -- npx -y inspect-comment-mcp
 ```json
 {
   "mcpServers": {
-    "inspect-comment": {
+    "element-review-inspector": {
       "command": "npx",
-      "args": ["-y", "inspect-comment-mcp"]
+      "args": ["-y", "github:pavlopuzikov/element-review-inspector"]
     }
   }
 }
@@ -42,9 +43,9 @@ From a clone, point at the file instead:
 ```json
 {
   "mcpServers": {
-    "inspect-comment": {
+    "element-review-inspector": {
       "command": "node",
-      "args": ["/absolute/path/to/inspect-comment/mcp/server.mjs"]
+      "args": ["/absolute/path/to/element-review-inspector/mcp/server.mjs"]
     }
   }
 }
@@ -72,7 +73,7 @@ rest of the session does not.
 The server writes each image to disk and puts the path in the note:
 
 ```text
-- Screenshot: /tmp/inspect-comment-mcp/shots/review-3-note-1.png (412x88 png)
+- Screenshot: /tmp/element-review-inspector-mcp/shots/review-3-note-1.png (412x88 png)
 ```
 
 The agent reads that file if it decides it needs to look. The bytes deliberately
@@ -85,7 +86,7 @@ matters.
 | Variable | Default | |
 | --- | --- | --- |
 | `IC_MCP_PORT` | `7391` | Change it in both halves: `mount({ bridge: "http://127.0.0.1:9000" })`. |
-| `IC_MCP_DIR` | `<tmp>/inspect-comment-mcp` | Where reviews and screenshots are kept. |
+| `IC_MCP_DIR` | `<tmp>/element-review-inspector-mcp` | Where reviews and screenshots are kept. |
 
 The browser side is on by default and needs no configuration. It probes
 `/health` once at mount and again on the first copy, so starting the server

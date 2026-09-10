@@ -27,17 +27,17 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
  * other off switch and mounting twice would leave an orphaned shadow host.
  */
 export function loaderSource(version) {
-  const url = `https://cdn.jsdelivr.net/gh/pavlopuzikov/inspect-comment@v${version}/dist/inspect-comment.js`;
+  const url = `https://cdn.jsdelivr.net/gh/pavlopuzikov/element-review-inspector@v${version}/dist/element-review-inspector.js`;
   return [
     "(function(){",
     "var w=window,d=document;",
-    "if(w.__inspectComment){w.__inspectComment.destroy();return}",
+    "if(w.__elementReviewInspector){w.__elementReviewInspector.destroy();return}",
     "var s=d.createElement('script');",
     `s.src='${url}';`,
     // A CSP that forbids third-party scripts is the one failure mode with no
     // visible symptom at all: the element never executes and nothing is logged
     // anywhere the reviewer would look. Say so, and name the way round it.
-    "s.onerror=function(){alert('inspect-comment could not load. This page blocks third-party scripts (CSP). Open the console and paste dist/inspect-comment.js instead.')};",
+    "s.onerror=function(){alert('element-review-inspector could not load. This page blocks third-party scripts (CSP). Open the console and paste dist/element-review-inspector.js instead.')};",
     "(d.body||d.documentElement).appendChild(s)",
     "})()",
   ].join("");
@@ -51,7 +51,7 @@ export function bookmarklet(version) {
 export function page(version) {
   return `# Bookmarklet
 
-One drag, and inspect-comment works on any page you can open, including sites
+One drag, and element-review-inspector works on any page you can open, including sites
 you do not control and cannot add a script tag to.
 
 **Drag this to your bookmarks bar**, or make a new bookmark and paste it as the
@@ -87,7 +87,7 @@ The way round it is the console paste, which no CSP can stop because it is not
 a page resource:
 
 1. Open DevTools, Console.
-2. Paste the contents of [dist/inspect-comment.js](../dist/inspect-comment.js).
+2. Paste the contents of [dist/element-review-inspector.js](../dist/element-review-inspector.js).
 
 **\`chrome://\` and \`about:\` pages, the Chrome Web Store, and PDF viewers.**
 Extensions cannot run there and neither can bookmarklets.

@@ -10,7 +10,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { blend, contrastRatio, wcagRequirement } from "../src/inspect-comment.js";
+import { blend, contrastRatio, wcagRequirement } from "../src/element-review-inspector.js";
 
 const WHITE = { r: 255, g: 255, b: 255, a: 1 };
 const BLACK = { r: 0, g: 0, b: 0, a: 1 };

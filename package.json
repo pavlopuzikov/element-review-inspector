@@ -1,6 +1,6 @@
 {
-  "name": "inspect-comment",
-  "version": "2.1.0",
+  "name": "element-review-inspector",
+  "version": "3.0.0",
   "description": "Dev-only element inspector + comment queue: hover, click, comment, copy one markdown review block naming each element precisely. Reads React Server Components, computes WCAG contrast, and records live CSS edits as before/after pairs.",
   "keywords": [
     "devtools",
@@ -24,27 +24,27 @@
   "author": "Pavlo Puzikov (https://github.com/pavlopuzikov)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pavlopuzikov/inspect-comment.git"
+    "url": "git+https://github.com/pavlopuzikov/element-review-inspector.git"
   },
-  "homepage": "https://github.com/pavlopuzikov/inspect-comment#readme",
-  "bugs": "https://github.com/pavlopuzikov/inspect-comment/issues",
+  "homepage": "https://github.com/pavlopuzikov/element-review-inspector#readme",
+  "bugs": "https://github.com/pavlopuzikov/element-review-inspector/issues",
   "type": "module",
-  "main": "./src/inspect-comment.js",
-  "types": "./src/inspect-comment.d.ts",
+  "main": "./src/element-review-inspector.js",
+  "types": "./src/element-review-inspector.d.ts",
   "exports": {
     ".": {
-      "types": "./src/inspect-comment.d.ts",
-      "default": "./src/inspect-comment.js"
+      "types": "./src/element-review-inspector.d.ts",
+      "default": "./src/element-review-inspector.js"
     },
     "./react": "./src/DevInspector.tsx",
     "./auto": "./auto.js",
-    "./iife": "./dist/inspect-comment.js",
+    "./iife": "./dist/element-review-inspector.js",
     "./package.json": "./package.json",
     "./mcp": "./mcp/server.mjs"
   },
   "sideEffects": [
     "./auto.js",
-    "./dist/inspect-comment.js"
+    "./dist/element-review-inspector.js"
   ],
   "files": [
     "src/",
@@ -66,6 +66,6 @@
     "demo": "node scripts/build.mjs && npx --yes serve . -l 4321"
   },
   "bin": {
-    "inspect-comment-mcp": "./mcp/server.mjs"
+    "element-review-inspector-mcp": "./mcp/server.mjs"
   }
 }

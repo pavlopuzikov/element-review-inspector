@@ -1,13 +1,13 @@
 # Bookmarklet
 
-One drag, and inspect-comment works on any page you can open, including sites
+One drag, and element-review-inspector works on any page you can open, including sites
 you do not control and cannot add a script tag to.
 
 **Drag this to your bookmarks bar**, or make a new bookmark and paste it as the
 URL:
 
 ```
-javascript:(function()%7Bvar%20w%3Dwindow%2Cd%3Ddocument%3Bif(w.__inspectComment)%7Bw.__inspectComment.destroy()%3Breturn%7Dvar%20s%3Dd.createElement('script')%3Bs.src%3D'https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpavlopuzikov%2Finspect-comment%40v2.1.0%2Fdist%2Finspect-comment.js'%3Bs.onerror%3Dfunction()%7Balert('inspect-comment%20could%20not%20load.%20This%20page%20blocks%20third-party%20scripts%20(CSP).%20Open%20the%20console%20and%20paste%20dist%2Finspect-comment.js%20instead.')%7D%3B(d.body%7C%7Cd.documentElement).appendChild(s)%7D)()
+javascript:(function()%7Bvar%20w%3Dwindow%2Cd%3Ddocument%3Bif(w.__elementReviewInspector)%7Bw.__elementReviewInspector.destroy()%3Breturn%7Dvar%20s%3Dd.createElement('script')%3Bs.src%3D'https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpavlopuzikov%2Felement-review-inspector%40v3.0.0%2Fdist%2Felement-review-inspector.js'%3Bs.onerror%3Dfunction()%7Balert('element-review-inspector%20could%20not%20load.%20This%20page%20blocks%20third-party%20scripts%20(CSP).%20Open%20the%20console%20and%20paste%20dist%2Felement-review-inspector.js%20instead.')%7D%3B(d.body%7C%7Cd.documentElement).appendChild(s)%7D)()
 ```
 
 Click it once to mount the inspector, and again to remove it.
@@ -15,10 +15,10 @@ Click it once to mount the inspector, and again to remove it.
 ## What it actually does
 
 It appends one `<script>` pointing at the committed IIFE build on jsDelivr,
-pinned to v2.1.0:
+pinned to v3.0.0:
 
 ```js
-(function(){var w=window,d=document;if(w.__inspectComment){w.__inspectComment.destroy();return}var s=d.createElement('script');s.src='https://cdn.jsdelivr.net/gh/pavlopuzikov/inspect-comment@v2.1.0/dist/inspect-comment.js';s.onerror=function(){alert('inspect-comment could not load. This page blocks third-party scripts (CSP). Open the console and paste dist/inspect-comment.js instead.')};(d.body||d.documentElement).appendChild(s)})()
+(function(){var w=window,d=document;if(w.__elementReviewInspector){w.__elementReviewInspector.destroy();return}var s=d.createElement('script');s.src='https://cdn.jsdelivr.net/gh/pavlopuzikov/element-review-inspector@v3.0.0/dist/element-review-inspector.js';s.onerror=function(){alert('element-review-inspector could not load. This page blocks third-party scripts (CSP). Open the console and paste dist/element-review-inspector.js instead.')};(d.body||d.documentElement).appendChild(s)})()
 ```
 
 Nothing is sent anywhere. jsDelivr serves the file; the review stays in the page
@@ -36,7 +36,7 @@ The way round it is the console paste, which no CSP can stop because it is not
 a page resource:
 
 1. Open DevTools, Console.
-2. Paste the contents of [dist/inspect-comment.js](../dist/inspect-comment.js).
+2. Paste the contents of [dist/element-review-inspector.js](../dist/element-review-inspector.js).
 
 **`chrome://` and `about:` pages, the Chrome Web Store, and PDF viewers.**
 Extensions cannot run there and neither can bookmarklets.

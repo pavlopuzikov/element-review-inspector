@@ -2,7 +2,7 @@
 Format, palette and primitives shared by the README animations.
 
 The palette is not invented: ACCENT and SELECT are the tool's own default
-outline colours, straight out of DEFAULTS in src/inspect-comment.js, so an
+outline colours, straight out of DEFAULTS in src/element-review-inspector.js, so an
 animation of the tool is drawn in the colours the tool actually paints.
 
 The design size and the frame size are two different numbers on purpose. A
@@ -156,7 +156,7 @@ def configure(output_file=None, scale=1.0, frame_rate=30, media_dir=None):
     config.frame_rate = frame_rate
     config.background_color = CANVAS
     config.media_dir = str(media_dir or os.environ.get(
-        "IC_MEDIA_DIR", Path(tempfile.gettempdir()) / "inspect-comment-anim"))
+        "IC_MEDIA_DIR", Path(tempfile.gettempdir()) / "element-review-inspector-anim"))
     if output_file is not None:
         config.output_file = output_file
     _prune_text_cache(Path(config.media_dir) / "texts")

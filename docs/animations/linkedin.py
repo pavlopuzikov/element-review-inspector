@@ -39,7 +39,7 @@ from theme import (
     SCRIM_TEXT, ACCENT, SELECT, WARN, GOOD, HAIR, OUTLINE,
 )
 from parts import (
-    MockPage, outline, section_outline, badge, dock, cursor, panel, place, t, box,
+    MockPage, outline, section_outline, badge, dock, cursor, panel, place, place_panel, t, box,
     comment_text, scrim, tag, tracked, shadow,
 )
 
@@ -58,7 +58,7 @@ SCALE = float(os.environ.get("IC_SCALE", 1.5))
 theme.configure(scale=SCALE)
 theme.register_fonts()
 
-GH = "github.com/pavlopuzikov/inspect-comment"
+GH = "github.com/pavlopuzikov/element-review-inspector"
 
 
 # ------------------------------------------------------------------ pieces ---
@@ -142,7 +142,7 @@ class LinkedIn(Scene):
     # -- 1. what it is ------------------------------------------------------
 
     def beat_title(self):
-        word = t("inspect-comment", 42, INK, MONO, weight="BOLD")
+        word = t("element-review-inspector", 42, INK, MONO, weight="BOLD")
         word.move_to(P(640, 274))
         rule = Line(P(566, 322), P(714, 322), stroke_width=HAIR, color=LINE)
         tag_line = t("Point at the element. Say what is wrong.", 17, INK_DIM, BODY)
@@ -233,8 +233,8 @@ class LinkedIn(Scene):
             ("Selector", "#golden-era > a", None),
             ("Box", "196x44 pad 16 24", None),
             ("A11y", "3.1:1 FAILS AA", WARN),
-        ], comment="")
-        place(p, 1280 - 16 - 340, 720 - 16 - 34 - 10 - p.height * PXU)
+        ], comment="", crumbs=["<main>", "<section>#golden-era", "<a>.cta"])
+        place_panel(p, 1280 - 16 - 340, 720 - 16 - 34 - 10 - p.height * PXU)
         self.play(FadeIn(p, shift=UP * px(12)), run_time=0.5)
         # Five labelled rows, and the whole argument of the tool is that you did
         # not have to write any of them. That needs reading, not glancing at.
@@ -274,8 +274,8 @@ class LinkedIn(Scene):
             ("Component", "ChaptersIndex > TeaserCard", None),
             ("Selector", "div:nth-of-type(2)", None),
             ("Box", "340x150 pad 20 24", None),
-        ], comment="")
-        place(p2, 1280 - 16 - 340, 720 - 16 - 34 - 10 - p2.height * PXU)
+        ], comment="", crumbs=["<main>", "<div>.cards", "<div>.card"])
+        place_panel(p2, 1280 - 16 - 340, 720 - 16 - 34 - 10 - p2.height * PXU)
         self.play(FadeIn(p2, shift=UP * px(10)), run_time=0.35)
         note2 = comment_text(p2, "cards need more air between them")
         self.play(AddTextLetterByLetter(note2, run_time=1.2))
@@ -363,7 +363,7 @@ class LinkedIn(Scene):
         self.wait(2.8)
 
         cmd = listing(
-            [("claude mcp add inspect-comment -- npx -y inspect-comment-mcp", PANEL_TEXT)],
+            [("claude mcp add element-review-inspector -- npx -y github:pavlopuzikov/element-review-inspector", PANEL_TEXT)],
             size=14, lead=24, pad_y=20, fill="#0f0e0d",
         )
         cmd.move_to(P(640, 588))
@@ -374,7 +374,7 @@ class LinkedIn(Scene):
     # -- 6. where to get it -------------------------------------------------
 
     def beat_close(self):
-        word = t("inspect-comment", 34, INK, MONO, weight="BOLD")
+        word = t("element-review-inspector", 34, INK, MONO, weight="BOLD")
         word.move_to(P(640, 268))
         url = t(GH, 17, INK_DIM, MONO)
         url.move_to(P(640, 322))

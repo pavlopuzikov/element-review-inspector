@@ -3,6 +3,6 @@
 //   <script type="module" src="/auto.js"></script>
 //
 // Safe to put in <head> without defer; the core waits for document.body.
-import { mount } from "./src/inspect-comment.js";
+import { mount } from "./src/element-review-inspector.js";
 
 mount();
