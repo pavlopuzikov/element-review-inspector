@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- **The dock was buried under the page on any site with a sticky header.** The
+  shadow host is `position: fixed` with no `z-index`, which makes it a stacking
+  context in its own right: the `z-index: 2147483001` on `.dock` only ever
+  competed with the inspector's other layers, while the host itself competed
+  with the page at `auto` and lost to every positioned element that declared a
+  z-index. The control that starts a selection was drawn and then painted over.
+  The host now carries `z-index: 2147483000`, and `npm run check` fails if it
+  loses it again.
+
 ## 3.0.1
 
 No code change. The `v3.0.0` tag was pushed once with an incomplete tree and

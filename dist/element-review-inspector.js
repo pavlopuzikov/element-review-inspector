@@ -1449,7 +1449,20 @@ function createInspector(options = {}) {
   // descendants.
   const host = document.createElement("div");
   host.setAttribute(HOST_ATTR, "");
-  Object.assign(host.style, { position: "fixed", top: "0", left: "0", width: "0", height: "0" });
+  // DECISION: the z-index belongs on the host, not only on the dock inside it.
+  // A `position: fixed` element with `z-index: auto` is still a stacking
+  // context, so the 2147483001 on `.dock` is scoped to this subtree and buys
+  // nothing against the page. The host itself competed at `auto` and lost to
+  // any positioned page element that declared a z-index at all, which is every
+  // sticky header and every modal. The dock rendered under them.
+  Object.assign(host.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "0",
+    height: "0",
+    zIndex: "2147483000",
+  });
   const shadow = host.attachShadow({ mode: "open" });
 
   const style = document.createElement("style");

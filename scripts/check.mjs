@@ -84,6 +84,19 @@ if (/^\s*mount\(\s*\)/m.test(src)) {
   ok("importing the core has no side effects");
 }
 
+// The shadow host is `position: fixed`, which makes it a stacking context on
+// its own. Every z-index inside CSS_TEXT is therefore scoped to that subtree
+// and does nothing against the page, so the host needs its own. Without it the
+// dock rendered under any sticky header or modal that declared a z-index.
+const hostStyle = /host\.style,\s*\{[^}]*\}/s.exec(src);
+if (!hostStyle) {
+  fail("could not find the shadow host's inline style block in src/; the z-index guard below cannot run.");
+} else if (!/zIndex:\s*"21474830\d\d"/.test(hostStyle[0])) {
+  fail("the shadow host has no z-index. A fixed host with z-index:auto buries the dock under any positioned page element.");
+} else {
+  ok("the shadow host carries its own z-index");
+}
+
 /* 4. the bookmarklet matches the version in package.json ------------------- */
 
 const { page: bookmarkletPage } = await import("./bookmarklet.mjs");
