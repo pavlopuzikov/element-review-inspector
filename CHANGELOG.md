@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.0.1
+
+No code change. The `v3.0.0` tag was pushed once with an incomplete tree and
+moved a few minutes later, and jsDelivr had already cached the first version:
+it treats a version tag as immutable, and a purge did not dislodge it. So the
+bookmarklet pinned to `v3.0.0` served the 2.1.0 build under a new file name.
+Re-cut as 3.0.1 on a tag that has never moved. Do not move a tag jsDelivr can
+see; cut the next one.
+
 ## 3.0.0
 
 Renamed from `inspect-comment` to `element-review-inspector`, so the name says

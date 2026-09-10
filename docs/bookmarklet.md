@@ -7,7 +7,7 @@ you do not control and cannot add a script tag to.
 URL:
 
 ```
-javascript:(function()%7Bvar%20w%3Dwindow%2Cd%3Ddocument%3Bif(w.__elementReviewInspector)%7Bw.__elementReviewInspector.destroy()%3Breturn%7Dvar%20s%3Dd.createElement('script')%3Bs.src%3D'https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpavlopuzikov%2Felement-review-inspector%40v3.0.0%2Fdist%2Felement-review-inspector.js'%3Bs.onerror%3Dfunction()%7Balert('element-review-inspector%20could%20not%20load.%20This%20page%20blocks%20third-party%20scripts%20(CSP).%20Open%20the%20console%20and%20paste%20dist%2Felement-review-inspector.js%20instead.')%7D%3B(d.body%7C%7Cd.documentElement).appendChild(s)%7D)()
+javascript:(function()%7Bvar%20w%3Dwindow%2Cd%3Ddocument%3Bif(w.__elementReviewInspector)%7Bw.__elementReviewInspector.destroy()%3Breturn%7Dvar%20s%3Dd.createElement('script')%3Bs.src%3D'https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpavlopuzikov%2Felement-review-inspector%40v3.0.1%2Fdist%2Felement-review-inspector.js'%3Bs.onerror%3Dfunction()%7Balert('element-review-inspector%20could%20not%20load.%20This%20page%20blocks%20third-party%20scripts%20(CSP).%20Open%20the%20console%20and%20paste%20dist%2Felement-review-inspector.js%20instead.')%7D%3B(d.body%7C%7Cd.documentElement).appendChild(s)%7D)()
 ```
 
 Click it once to mount the inspector, and again to remove it.
@@ -15,10 +15,10 @@ Click it once to mount the inspector, and again to remove it.
 ## What it actually does
 
 It appends one `<script>` pointing at the committed IIFE build on jsDelivr,
-pinned to v3.0.0:
+pinned to v3.0.1:
 
 ```js
-(function(){var w=window,d=document;if(w.__elementReviewInspector){w.__elementReviewInspector.destroy();return}var s=d.createElement('script');s.src='https://cdn.jsdelivr.net/gh/pavlopuzikov/element-review-inspector@v3.0.0/dist/element-review-inspector.js';s.onerror=function(){alert('element-review-inspector could not load. This page blocks third-party scripts (CSP). Open the console and paste dist/element-review-inspector.js instead.')};(d.body||d.documentElement).appendChild(s)})()
+(function(){var w=window,d=document;if(w.__elementReviewInspector){w.__elementReviewInspector.destroy();return}var s=d.createElement('script');s.src='https://cdn.jsdelivr.net/gh/pavlopuzikov/element-review-inspector@v3.0.1/dist/element-review-inspector.js';s.onerror=function(){alert('element-review-inspector could not load. This page blocks third-party scripts (CSP). Open the console and paste dist/element-review-inspector.js instead.')};(d.body||d.documentElement).appendChild(s)})()
 ```
 
 Nothing is sent anywhere. jsDelivr serves the file; the review stays in the page
