@@ -1,6 +1,6 @@
 {
   "name": "element-review-inspector",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Dev-only element inspector + comment queue: hover, click, comment, copy one markdown review block naming each element precisely. Reads React Server Components, computes WCAG contrast, and records live CSS edits as before/after pairs.",
   "keywords": [
     "devtools",
